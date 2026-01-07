@@ -71,11 +71,16 @@ interface PortfolioStore {
   data: PortfolioData
   updateBio: (bio: string) => void
   updatePhilosophy: (philosophy: string) => void
+  updateName: (name: string) => void
+  updateTitle: (title: string) => void
+  updateEmail: (email: string) => void
+  updateInstagram: (instagram: string) => void
   addSeries: (series: Series) => void
   updateSeries: (id: string, updates: Partial<Series>) => void
   deleteSeries: (id: string) => void
   addPhoto: (seriesId: string, photo: Photo) => void
   deletePhoto: (seriesId: string, photoId: string) => void
+  updatePhoto: (seriesId: string, photoId: string, updates: Partial<Photo>) => void
   getSeries: (slug: string) => Series | undefined
   getFeaturedSeries: () => Series[]
 }
@@ -84,6 +89,22 @@ export const usePortfolioStore = create<PortfolioStore>()(
   persist(
     (set, get) => ({
       data: defaultPortfolioData,
+      updateName: (name: string) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            name,
+            lastUpdated: new Date().toISOString(),
+          },
+        })),
+      updateTitle: (title: string) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            title,
+            lastUpdated: new Date().toISOString(),
+          },
+        })),
       updateBio: (bio: string) =>
         set((state) => ({
           data: {
@@ -97,6 +118,22 @@ export const usePortfolioStore = create<PortfolioStore>()(
           data: {
             ...state.data,
             philosophy,
+            lastUpdated: new Date().toISOString(),
+          },
+        })),
+      updateEmail: (email: string) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            email,
+            lastUpdated: new Date().toISOString(),
+          },
+        })),
+      updateInstagram: (instagram: string) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            instagram,
             lastUpdated: new Date().toISOString(),
           },
         })),
@@ -145,6 +182,23 @@ export const usePortfolioStore = create<PortfolioStore>()(
             series: state.data.series.map((s) =>
               s.id === seriesId
                 ? { ...s, photos: s.photos.filter((p) => p.id !== photoId) }
+                : s
+            ),
+            lastUpdated: new Date().toISOString(),
+          },
+        })),
+      updatePhoto: (seriesId: string, photoId: string, updates: Partial<Photo>) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            series: state.data.series.map((s) =>
+              s.id === seriesId
+                ? {
+                    ...s,
+                    photos: s.photos.map((p) =>
+                      p.id === photoId ? { ...p, ...updates } : p
+                    ),
+                  }
                 : s
             ),
             lastUpdated: new Date().toISOString(),
