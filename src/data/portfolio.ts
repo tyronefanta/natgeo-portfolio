@@ -67,7 +67,7 @@ export const defaultPortfolioData: PortfolioData = {
   lastUpdated: new Date().toISOString(),
 }
 
-export const usePortfolioStore = create<{
+interface PortfolioStore {
   data: PortfolioData
   updateBio: (bio: string) => void
   updatePhilosophy: (philosophy: string) => void
@@ -78,7 +78,9 @@ export const usePortfolioStore = create<{
   deletePhoto: (seriesId: string, photoId: string) => void
   getSeries: (slug: string) => Series | undefined
   getFeaturedSeries: () => Series[]
-}>(
+}
+
+export const usePortfolioStore = create<PortfolioStore>()(
   persist(
     (set, get) => ({
       data: defaultPortfolioData,
