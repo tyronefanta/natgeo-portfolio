@@ -1,4 +1,4 @@
-```typescript
+
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { themes, defaultTheme, type Theme } from './themes'
