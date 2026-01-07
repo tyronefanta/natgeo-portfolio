@@ -1,3 +1,4 @@
+```typescript
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -70,7 +71,7 @@ export default function AdminDashboard() {
     const newSeries = {
       id: `series-${Date.now()}`,
       title: seriesTitle,
-      slug: seriesTitle.toLowerCase().replace(/s+/g, '-'),
+      slug: seriesTitle.toLowerCase().replace(/\s+/g, '-'),
       description: seriesDescription,
       location: seriesLocation || 'Location',
       year: seriesYear,
@@ -294,7 +295,7 @@ export default function AdminDashboard() {
                     <div>
                       <h3 className="text-xl font-bold">{series.title}</h3>
                       <p className="text-nat-light/60 text-sm">
-                        {series.location} • {series.year} • {series.photos.length} photos
+                        {series.location} â€¢ {series.year} â€¢ {series.photos.length} photos
                       </p>
                     </div>
                     <button
@@ -312,7 +313,7 @@ export default function AdminDashboard() {
                     }
                     className="text-nat-light/60 hover:text-nat-light text-sm mb-4"
                   >
-                    {editingSeries === series.id ? '▼ Hide' : '▶ Edit Details'}
+                    {editingSeries === series.id ? 'â–¼ Hide' : 'â–¶ Edit Details'}
                   </button>
 
                   {/* Edit Series Form */}
@@ -437,7 +438,18 @@ export default function AdminDashboard() {
         <div className="mt-12 text-nat-light/40 text-sm">
           <p>Last updated: {new Date(data.lastUpdated).toLocaleString()}</p>
         </div>
+
+        {/* Customize Theme Link */}
+        <div className="mt-8 text-center">
+          <Link 
+            href="/admin/customize-theme" 
+            className="text-nat-light/60 hover:text-nat-light text-sm underline"
+          >
+            Customize Theme & Colors
+          </Link>
+        </div>
       </div>
     </div>
   )
 }
+```
